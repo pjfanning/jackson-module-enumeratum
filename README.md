@@ -1,5 +1,7 @@
 # jackson-module-enumeratum
 
+Enumeratum support for Jackson
+
 ```
   val mapper = JsonMapper.builder().addModule(DefaultScalaModule).addModule(EnumeratumModule).build()
   val car = Car("Volga", Color.Blue)
