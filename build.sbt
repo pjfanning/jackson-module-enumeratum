@@ -6,7 +6,7 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
   .settings(
     name := "jackson-module-enumeratum",
     organization := "com.github.pjfanning",
-    crossScalaVersions := Seq("2.12.12", "2.13.4", "3.0.0-M3"),
+    crossScalaVersions := Seq("2.12.12", "2.13.4"),
     scalaVersion := "2.13.4",
 
     sbtPlugin := false,
@@ -45,6 +45,14 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
     ),
 
     // enable publishing the main API jar
-    publishArtifact in (Compile, packageDoc) := true
+    publishArtifact in (Compile, packageDoc) := true,
+
+    // build.properties
+    resourceGenerators in Compile += Def.task {
+      val file = (resourceManaged in Compile).value / "com" / "github" / "pjfanning" / "enumeratum" / "build.properties"
+      val contents = "version=%s\ngroupId=%s\nartifactId=%s\n".format(version.value, organization.value, name.value)
+      IO.write(file, contents)
+      Seq(file)
+    }.taskValue
   )
 
