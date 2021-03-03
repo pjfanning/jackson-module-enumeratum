@@ -5,10 +5,9 @@ import com.fasterxml.jackson.databind.deser.Deserializers
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.fasterxml.jackson.databind._
 import com.github.pjfanning.enumeratum.JacksonModule
-import enumeratum.EnumEntry
+import enumeratum.{Enum, EnumEntry}
 
 import scala.languageFeature.postfixOps
-import scala.util.Try
 
 private case class EnumeratumDeserializer[T <: EnumEntry](clazz: Class[T]) extends StdDeserializer[T](clazz) {
   private val clazzName = clazz.getName
