@@ -11,22 +11,12 @@ import scala.languageFeature.postfixOps
 import scala.util.Try
 
 private case class EnumeratumDeserializer[T <: EnumEntry](clazz: Class[T]) extends StdDeserializer[T](clazz) {
-  private val StringClass = classOf[String]
   private val clazzName = clazz.getName
+  private val enum = Class.forName(clazzName + "$").getField("MODULE$").get(null).asInstanceOf[Enum[T]]
 
   override def deserialize(p: JsonParser, ctxt: DeserializationContext): T = {
-    val objectClassOption = if(clazzName.endsWith("$")) {
-      Try(Class.forName(clazzName.substring(0, clazzName.length - 1))).toOption
-    } else {
-      Some(clazz)
-    }
     val text = p.getValueAsString
-    val result = objectClassOption.flatMap { objectClass =>
-      Option(objectClass.getMethod("withNameInsensitive", StringClass)).map { method =>
-        method.invoke(None.orNull, text).asInstanceOf[T]
-      }
-    }
-    result.getOrElse(throw new IllegalArgumentException(s"Failed to create EnumEntry for $text"))
+    enum.withNameInsensitive(text)
   }
 }
 
