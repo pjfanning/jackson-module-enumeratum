@@ -12,8 +12,7 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
     sbtPlugin := false,
 
     scalacOptions ++= Seq("-deprecation", "-Xcheckinit", "-encoding", "utf8", "-g:vars", "-unchecked", "-optimize"),
-    parallelExecution := true,
-    parallelExecution in Test := true,
+    Test / parallelExecution := true,
     homepage := Some(new java.net.URL("https://github.com/pjfanning/jackson-module-enumeratum/")),
     description := "A library for serializing/deserializing enumeratum enums using Jackson.",
 
@@ -45,11 +44,11 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
     ),
 
     // enable publishing the main API jar
-    publishArtifact in (Compile, packageDoc) := true,
+    publishArtifact := true,
 
     // build.properties
-    resourceGenerators in Compile += Def.task {
-      val file = (resourceManaged in Compile).value / "com" / "github" / "pjfanning" / "enumeratum" / "build.properties"
+    Compile / resourceGenerators += Def.task {
+      val file = (Compile / resourceManaged).value / "com" / "github" / "pjfanning" / "enumeratum" / "build.properties"
       val contents = "version=%s\ngroupId=%s\nartifactId=%s\n".format(version.value, organization.value, name.value)
       IO.write(file, contents)
       Seq(file)
