@@ -57,7 +57,7 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
     ThisBuild / githubWorkflowTargetTags ++= Seq("v*"),
     ThisBuild / githubWorkflowPublishTargetBranches := Seq(
       RefPredicate.Equals(Ref.Branch("main")),
-      RefPredicate.Equals(Ref.Branch("swagger-1.5")),
+      RefPredicate.Equals(Ref.Branch("2.12")),
       RefPredicate.StartsWith(Ref.Tag("v"))
     ),
 
