@@ -22,5 +22,16 @@ class EnumeratumSerializerSpec extends AnyWordSpec with Matchers {
       json should include(s""""model":"${car.model}"""")
       json should include(s""""color":"${car.color.entryName}"""")
     }
+    "serialize case class with option" in {
+      val mapper = JsonMapper.builder().addModule(DefaultScalaModule).addModule(EnumeratumModule).build()
+      val car = CarWithOptionalColor("Volga", Some(Color.Blue))
+      val json = mapper.writeValueAsString(car)
+      json should include(s""""model":"${car.model}"""")
+      json should include(s""""color":"${Color.Blue.entryName}"""")
+      val car2 = CarWithOptionalColor("Volga", None)
+      val json2 = mapper.writeValueAsString(car2)
+      json2 should include(s""""model":"${car2.model}"""")
+      json2 should include(s""""color":null""")
+    }
   }
 }
