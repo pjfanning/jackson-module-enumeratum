@@ -6,8 +6,8 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
   .settings(
     name := "jackson-module-enumeratum",
     organization := "com.github.pjfanning",
-    crossScalaVersions := Seq("2.12.14", "2.13.6"),
-    scalaVersion := "2.13.6",
+    ThisBuild / scalaVersion := "2.13.6",
+    ThisBuild / crossScalaVersions := Seq("2.12.14", "2.13.6"),
 
     sbtPlugin := false,
 
@@ -52,6 +52,25 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
       val contents = "version=%s\ngroupId=%s\nartifactId=%s\n".format(version.value, organization.value, name.value)
       IO.write(file, contents)
       Seq(file)
-    }.taskValue
+    }.taskValue,
+
+    ThisBuild / githubWorkflowTargetTags ++= Seq("v*"),
+    ThisBuild / githubWorkflowPublishTargetBranches := Seq(
+      RefPredicate.Equals(Ref.Branch("main")),
+      RefPredicate.Equals(Ref.Branch("swagger-1.5")),
+      RefPredicate.StartsWith(Ref.Tag("v"))
+    ),
+
+    ThisBuild / githubWorkflowPublish := Seq(
+      WorkflowStep.Sbt(
+        List("ci-release"),
+        env = Map(
+          "PGP_PASSPHRASE" -> "${{ secrets.PGP_PASSPHRASE }}",
+          "PGP_SECRET" -> "${{ secrets.PGP_SECRET }}",
+          "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
+          "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}"
+        )
+      )
+    )
   )
 
