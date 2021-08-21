@@ -14,8 +14,17 @@ private case class EnumeratumDeserializer[T <: EnumEntry](clazz: Class[T]) exten
   private val enum = Class.forName(clazzName + "$").getField("MODULE$").get(null).asInstanceOf[Enum[T]]
 
   override def deserialize(p: JsonParser, ctxt: DeserializationContext): T = {
-    val text = p.getValueAsString
-    enum.withNameInsensitive(text)
+    emptyToNone(p.getValueAsString) match {
+      case Some(text) => enum.withNameInsensitive(text)
+      case _ => None.orNull.asInstanceOf[T]
+    }
+  }
+
+  private def emptyToNone(str: String): Option[String] = {
+    Option(str).map(_.trim) match {
+      case Some(s) if !s.isEmpty => Some(s)
+      case _ => None
+    }
   }
 }
 
