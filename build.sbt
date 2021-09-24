@@ -1,6 +1,5 @@
 import sbt._
 import Keys._
-import sbtrelease.ReleasePlugin._
 
 lazy val jacksonModuleEnumeratum = (project in file("."))
   .settings(
