@@ -1,6 +1,6 @@
 # jackson-module-enumeratum
 
-[![Build Status](https://travis-ci.com/pjfanning/jackson-module-enumeratum.svg?branch=master)](https://travis-ci.com/pjfanning/jackson-module-enumeratum)
+![Build Status](https://github.com/pjfanning/jackson-module-enumeratum/actions/workflows/ci.yml/badge.svg)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.pjfanning/jackson-module-enumeratum_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.pjfanning/jackson-module-enumeratum_2.13)
 
 Enumeratum support for Jackson
