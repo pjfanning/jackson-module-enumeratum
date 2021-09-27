@@ -9,8 +9,9 @@ import enumeratum.EnumEntry
 import scala.languageFeature.postfixOps
 
 private object EnumeratumSerializer extends JsonSerializer[EnumEntry] {
-  def serialize(value: EnumEntry, jgen: JsonGenerator, provider: SerializerProvider): Unit =
-    jgen.writeString(value.entryName)
+  def serialize(value: EnumEntry, jgen: JsonGenerator, provider: SerializerProvider): Unit = {
+    provider.defaultSerializeValue(value.entryName, jgen)
+  }
 }
 
 private object EnumeratumSerializerResolver extends Serializers.Base {
