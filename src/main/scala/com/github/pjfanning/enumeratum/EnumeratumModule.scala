@@ -3,4 +3,6 @@ package com.github.pjfanning.enumeratum
 import com.github.pjfanning.enumeratum.deser.EnumeratumDeserializerModule
 import com.github.pjfanning.enumeratum.ser.EnumeratumSerializerModule
 
-object EnumeratumModule extends EnumeratumSerializerModule with EnumeratumDeserializerModule
+class EnumeratumModule extends EnumeratumSerializerModule with EnumeratumDeserializerModule
+
+object EnumeratumModule extends EnumeratumModule
