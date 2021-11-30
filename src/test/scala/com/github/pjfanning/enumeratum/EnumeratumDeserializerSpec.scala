@@ -13,6 +13,11 @@ class EnumeratumDeserializerSpec extends AnyWordSpec with Matchers {
       val red = s""""${Color.Red.entryName}""""
       mapper.readValue(red, classOf[Color]) shouldEqual(Color.Red)
     }
+    "deserialize Color with non-singleton EnumeratumModule" in {
+      val mapper = JsonMapper.builder().addModule(new EnumeratumModule).build()
+      val red = s""""${Color.Red.entryName}""""
+      mapper.readValue(red, classOf[Color]) shouldEqual(Color.Red)
+    }
     "deserialize Color (uppercase)" in {
       val mapper = JsonMapper.builder().addModule(EnumeratumModule).build()
       val red = s""""${Color.Red.entryName.toUpperCase}""""
