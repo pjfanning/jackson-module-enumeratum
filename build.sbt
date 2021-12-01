@@ -1,12 +1,13 @@
 import sbt._
 import Keys._
+import sbtghactions.JavaSpec.Distribution.Zulu
 
 lazy val jacksonModuleEnumeratum = (project in file("."))
   .settings(
     name := "jackson-module-enumeratum",
     organization := "com.github.pjfanning",
-    ThisBuild / scalaVersion := "2.13.6",
-    ThisBuild / crossScalaVersions := Seq("2.12.15", "2.13.6"),
+    ThisBuild / scalaVersion := "2.13.7",
+    ThisBuild / crossScalaVersions := Seq("2.12.15", "2.13.7"),
 
     sbtPlugin := false,
 
@@ -53,6 +54,7 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
       Seq(file)
     }.taskValue,
 
+    ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec(Zulu, "1.8")),
     ThisBuild / githubWorkflowTargetTags ++= Seq("v*"),
     ThisBuild / githubWorkflowPublishTargetBranches := Seq(
       RefPredicate.Equals(Ref.Branch("main")),
