@@ -16,12 +16,7 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
     homepage := Some(new java.net.URL("https://github.com/pjfanning/jackson-module-enumeratum/")),
     description := "A library for serializing/deserializing enumeratum enums using Jackson.",
 
-    publishTo := Some(
-      if (isSnapshot.value)
-        Opts.resolver.sonatypeSnapshots
-      else
-        Opts.resolver.sonatypeStaging
-    ),
+    publishTo := sonatypePublishToBundle.value,
 
     licenses := Seq("APL2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")),
 
