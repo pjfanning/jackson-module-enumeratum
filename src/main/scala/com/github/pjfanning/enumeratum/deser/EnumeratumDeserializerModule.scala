@@ -11,11 +11,11 @@ import scala.languageFeature.postfixOps
 
 private case class EnumeratumDeserializer[T <: EnumEntry](clazz: Class[T]) extends StdDeserializer[T](clazz) {
   private val clazzName = clazz.getName
-  private val enum = Class.forName(clazzName + "$").getField("MODULE$").get(null).asInstanceOf[Enum[T]]
+  private val enumInstance = Class.forName(clazzName + "$").getField("MODULE$").get(null).asInstanceOf[Enum[T]]
 
   override def deserialize(p: JsonParser, ctxt: DeserializationContext): T = {
     emptyToNone(p.getValueAsString) match {
-      case Some(text) => enum.withNameInsensitive(text)
+      case Some(text) => enumInstance.withNameInsensitive(text)
       case _ => None.orNull.asInstanceOf[T]
     }
   }
