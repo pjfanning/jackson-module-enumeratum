@@ -43,5 +43,13 @@ class EnumeratumDeserializerSpec extends AnyWordSpec with Matchers {
       val json2 = mapper.writeValueAsString(car2)
       mapper.readValue(json2, classOf[CarWithOptionalColor]) shouldEqual(car2)
     }
+    "deserialize map with enum key" in {
+      val mapper = JsonMapper.builder().addModule(DefaultScalaModule).addModule(EnumeratumModule).build()
+      val map = Map(Color.Blue -> "blue")
+      val json = mapper.writeValueAsString(map)
+      val map2 = mapper.readValue(json, new TypeReference[Map[Color, String]]{})
+      map2 should have size 1
+      map2(Color.Blue) shouldEqual "blue"
+    }
   }
 }
