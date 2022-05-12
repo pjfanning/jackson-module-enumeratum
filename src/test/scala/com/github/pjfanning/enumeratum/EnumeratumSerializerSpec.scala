@@ -7,13 +7,15 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class EnumeratumSerializerSpec extends AnyWordSpec with Matchers {
   "EnumeratumModule" should {
-    "serialize Color" in {
+    "serialize enums" in {
       val mapper = JsonMapper.builder().addModule(EnumeratumModule).build()
       mapper.writeValueAsString(Color.Red) shouldEqual (s""""${Color.Red.entryName}"""")
+      mapper.writeValueAsString(Fruit.Apple) shouldEqual (s""""${Fruit.Apple.entryName}"""")
     }
-    "serialize Color with non-singleton EnumeratumModule" in {
+    "serialize enums with non-singleton EnumeratumModule" in {
       val mapper = JsonMapper.builder().addModule(new EnumeratumModule).build()
       mapper.writeValueAsString(Color.Red) shouldEqual (s""""${Color.Red.entryName}"""")
+      mapper.writeValueAsString(Fruit.Apple) shouldEqual (s""""${Fruit.Apple.entryName}"""")
     }
     "serialize Ctx.Color" in {
       val mapper = JsonMapper.builder().addModule(EnumeratumModule).build()
@@ -36,6 +38,15 @@ class EnumeratumSerializerSpec extends AnyWordSpec with Matchers {
       val json2 = mapper.writeValueAsString(car2)
       json2 should include(s""""model":"${car2.model}"""")
       json2 should include(s""""color":null""")
+    }
+    "serialize map with enum key" in {
+      val mapper = JsonMapper.builder().addModule(DefaultScalaModule).addModule(EnumeratumModule).build()
+      val colorMap = Map(Color.Red -> "red")
+      val fruitMap = Map(Fruit.Apple -> Color.Red, Fruit.Pear -> Color.Green, Fruit.Blueberry -> Color.Blue)
+      val jsonColors = mapper.writeValueAsString(colorMap)
+      val jsonFruits = mapper.writeValueAsString(fruitMap)
+      jsonColors should include(s"""{"${Color.Red.entryName}":"red"}""")
+      jsonFruits should include(s"""{"${Fruit.Apple.entryName}":"${Color.Red.entryName}","${Fruit.Pear.entryName}":"${Color.Green.entryName}","${Fruit.Blueberry.entryName}":"${Color.Blue.entryName}"}""")
     }
   }
 }
