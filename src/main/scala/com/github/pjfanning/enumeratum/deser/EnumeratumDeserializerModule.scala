@@ -9,9 +9,26 @@ import enumeratum.{Enum, EnumEntry}
 
 import scala.languageFeature.postfixOps
 
+private object EnumeratumDeserializerShared {
+  val EnumEntryClass = classOf[EnumEntry]
+
+  def emptyToNone(str: String): Option[String] = {
+    Option(str).map(_.trim) match {
+      case Some(s) if s.nonEmpty => Some(s)
+      case _ => None
+    }
+  }
+
+  def getEnumInstance[T <: EnumEntry](clazzName: String): Enum[T] =
+    Class.forName(clazzName + "$").getField("MODULE$").get(null).asInstanceOf[Enum[T]]
+
+}
+
 private case class EnumeratumDeserializer[T <: EnumEntry](clazz: Class[T]) extends StdDeserializer[T](clazz) {
+  import EnumeratumDeserializerShared._
+
   private val clazzName = clazz.getName
-  private val enumInstance = Class.forName(clazzName + "$").getField("MODULE$").get(null).asInstanceOf[Enum[T]]
+  private val enumInstance = getEnumInstance(clazzName)
 
   override def deserialize(p: JsonParser, ctxt: DeserializationContext): T = {
     emptyToNone(p.getValueAsString) match {
@@ -19,18 +36,13 @@ private case class EnumeratumDeserializer[T <: EnumEntry](clazz: Class[T]) exten
       case _ => None.orNull.asInstanceOf[T]
     }
   }
-
-  private def emptyToNone(str: String): Option[String] = {
-    Option(str).map(_.trim) match {
-      case Some(s) if s.nonEmpty => Some(s)
-      case _ => None
-    }
-  }
 }
 
 private case class EnumeratumKeyDeserializer[T <: EnumEntry](clazz: Class[T]) extends KeyDeserializer {
+  import EnumeratumDeserializerShared._
+
   private val clazzName = clazz.getName
-  private val enumInstance = Class.forName(clazzName + "$").getField("MODULE$").get(null).asInstanceOf[Enum[T]]
+  private val enumInstance = getEnumInstance(clazzName)
 
   override def deserializeKey(key: String, ctxt: DeserializationContext): AnyRef = {
     emptyToNone(key) match {
@@ -38,29 +50,20 @@ private case class EnumeratumKeyDeserializer[T <: EnumEntry](clazz: Class[T]) ex
       case None => None.orNull.asInstanceOf[T]
     }
   }
-
-  private def emptyToNone(str: String): Option[String] = {
-    Option(str).map(_.trim) match {
-      case Some(s) if s.nonEmpty => Some(s)
-      case _ => None
-    }
-  }
 }
 
 private object EnumeratumDeserializerResolver extends Deserializers.Base {
-  private val EnumEntryClass = classOf[EnumEntry]
 
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig, beanDesc: BeanDescription): JsonDeserializer[EnumEntry] =
-    if (EnumEntryClass isAssignableFrom javaType.getRawClass)
+    if (EnumeratumDeserializerShared.EnumEntryClass isAssignableFrom javaType.getRawClass)
       EnumeratumDeserializer(javaType.getRawClass.asInstanceOf[Class[EnumEntry]])
     else None.orNull
 }
 
 private object EnumeratumKeyDeserializerResolver extends KeyDeserializers {
-  private val EnumEntryClass = classOf[EnumEntry]
 
   override def findKeyDeserializer(javaType: JavaType, config: DeserializationConfig, beanDesc: BeanDescription): KeyDeserializer =
-    if (EnumEntryClass isAssignableFrom javaType.getRawClass)
+    if (EnumeratumDeserializerShared.EnumEntryClass isAssignableFrom javaType.getRawClass)
       EnumeratumKeyDeserializer(javaType.getRawClass.asInstanceOf[Class[EnumEntry]])
     else None.orNull
 }

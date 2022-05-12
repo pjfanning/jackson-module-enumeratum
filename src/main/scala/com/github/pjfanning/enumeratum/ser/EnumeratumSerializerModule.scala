@@ -8,6 +8,10 @@ import enumeratum.EnumEntry
 
 import scala.languageFeature.postfixOps
 
+private object EnumeratumSerializerShared {
+  val EnumEntryClass = classOf[EnumEntry]
+}
+
 private object EnumeratumSerializer extends JsonSerializer[EnumEntry] {
   override def serialize(value: EnumEntry, jgen: JsonGenerator, provider: SerializerProvider): Unit =
     provider.defaultSerializeValue(value.entryName, jgen)
@@ -20,19 +24,17 @@ private object EnumeratumKeySerializer extends JsonSerializer[EnumEntry] {
 }
 
 private object EnumeratumSerializerResolver extends Serializers.Base {
-  private val EnumEntryClass = classOf[EnumEntry]
 
   override def findSerializer(config: SerializationConfig, javaType: JavaType, beanDesc: BeanDescription): JsonSerializer[EnumEntry] =
-    if (EnumEntryClass.isAssignableFrom(javaType.getRawClass))
+    if (EnumeratumSerializerShared.EnumEntryClass.isAssignableFrom(javaType.getRawClass))
       EnumeratumSerializer
     else None.orNull
 }
 
 private object EnumeratumKeySerializerResolver extends Serializers.Base {
-  private val EnumEntryClass = classOf[EnumEntry]
 
   override def findSerializer(config: SerializationConfig, javaType: JavaType, beanDesc: BeanDescription): JsonSerializer[EnumEntry] =
-    if (EnumEntryClass.isAssignableFrom(javaType.getRawClass))
+    if (EnumeratumSerializerShared.EnumEntryClass.isAssignableFrom(javaType.getRawClass))
       EnumeratumKeySerializer
     else None.orNull
 }
