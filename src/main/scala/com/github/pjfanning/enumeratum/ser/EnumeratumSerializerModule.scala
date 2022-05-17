@@ -18,11 +18,6 @@ private object EnumeratumSerializer extends JsonSerializer[EnumEntry] {
 
 }
 
-private object EnumeratumKeySerializer extends JsonSerializer[EnumEntry] {
-  override def serialize(value: EnumEntry, jgen: JsonGenerator, provider: SerializerProvider): Unit =
-    jgen.writeFieldName(value.entryName)
-}
-
 private object EnumeratumSerializerResolver extends Serializers.Base {
 
   override def findSerializer(config: SerializationConfig, javaType: JavaType, beanDesc: BeanDescription): JsonSerializer[EnumEntry] =
@@ -35,7 +30,7 @@ private object EnumeratumKeySerializerResolver extends Serializers.Base {
 
   override def findSerializer(config: SerializationConfig, javaType: JavaType, beanDesc: BeanDescription): JsonSerializer[EnumEntry] =
     if (EnumeratumSerializerShared.EnumEntryClass.isAssignableFrom(javaType.getRawClass))
-      EnumeratumKeySerializer
+      EnumeratumSerializer
     else None.orNull
 }
 
