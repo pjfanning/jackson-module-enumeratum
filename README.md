@@ -6,6 +6,10 @@
 Enumeratum support for Jackson
 
 ```
+libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-enumeratum" % "2.13.3"
+```
+
+```
   val mapper = JsonMapper.builder().addModule(DefaultScalaModule).addModule(EnumeratumModule).build()
   val car = Car("Volga", Color.Blue)
   val json = mapper.writeValueAsString(car)
