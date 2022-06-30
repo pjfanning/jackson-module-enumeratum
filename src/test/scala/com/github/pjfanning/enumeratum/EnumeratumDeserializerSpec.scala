@@ -60,5 +60,12 @@ class EnumeratumDeserializerSpec extends AnyWordSpec with Matchers {
       fruitMap2 should have size 3
       fruitMap2(Fruit.Blueberry) shouldEqual Color.Blue
     }
+    "serialize Colors" in {
+      val mapper = JsonMapper.builder().addModule(DefaultScalaModule).addModule(EnumeratumModule).build()
+      val json = mapper.writeValueAsString(Colors(Set(Color.Red, Color.Green)))
+      json should startWith("""{"set":[""")
+      json should include(""""red"""")
+      json should include(""""green"""")
+    }
   }
 }

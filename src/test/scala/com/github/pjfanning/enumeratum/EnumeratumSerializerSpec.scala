@@ -12,6 +12,12 @@ class EnumeratumSerializerSpec extends AnyWordSpec with Matchers {
       mapper.writeValueAsString(Color.Red) shouldEqual (s""""${Color.Red.entryName}"""")
       mapper.writeValueAsString(Fruit.Apple) shouldEqual (s""""${Fruit.Apple.entryName}"""")
     }
+    "deserialize Colors" in {
+      val mapper = JsonMapper.builder().addModule(DefaultScalaModule).addModule(EnumeratumModule).build()
+      val colors = Colors(Set(Color.Red, Color.Green))
+      val json = mapper.writeValueAsString(colors)
+      mapper.readValue(json, classOf[Colors]) shouldEqual(colors)
+    }
     "serialize enums with non-singleton EnumeratumModule" in {
       val mapper = JsonMapper.builder().addModule(new EnumeratumModule).build()
       mapper.writeValueAsString(Color.Red) shouldEqual (s""""${Color.Red.entryName}"""")

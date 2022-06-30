@@ -12,3 +12,5 @@ object Color extends Enum[Color] {
   case object Green extends Color("green")
   case object Blue extends Color("blue")
 }
+
+case class Colors(set: Set[Color])
