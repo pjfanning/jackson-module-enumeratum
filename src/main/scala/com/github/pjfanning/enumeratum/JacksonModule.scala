@@ -31,10 +31,6 @@ object JacksonModule {
   }
 }
 
-object VersionExtractor {
-  def unapply(v: Version) = Some(v.getMajorVersion, v.getMinorVersion)
-}
-
 trait JacksonModule extends Module {
 
   private val initializers = Seq.newBuilder[SetupContext => Unit]
