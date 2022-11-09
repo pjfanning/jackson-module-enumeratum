@@ -6,7 +6,7 @@
 Enumeratum support for Jackson
 
 ```
-libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-enumeratum" % "2.13.3"
+libraryDependencies += "com.github.pjfanning" %% "jackson-module-enumeratum" % "2.14.0"
 ```
 
 ```
