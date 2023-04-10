@@ -69,6 +69,7 @@ private object EnumeratumKeyDeserializerResolver extends KeyDeserializers {
 }
 
 trait EnumeratumDeserializerModule extends JacksonModule {
+  override def getModuleName: String = "EnumeratumDeserializerModule"
   this += { _ addDeserializers EnumeratumDeserializerResolver }
   this += { _ addKeyDeserializers EnumeratumKeyDeserializerResolver }
 }

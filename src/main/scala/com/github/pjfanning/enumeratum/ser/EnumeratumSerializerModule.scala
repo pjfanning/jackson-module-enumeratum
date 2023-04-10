@@ -40,6 +40,7 @@ private object EnumeratumKeySerializerResolver extends Serializers.Base {
 }
 
 trait EnumeratumSerializerModule extends JacksonModule {
+  override def getModuleName: String = "EnumeratumSerializerModule"
   this += { _ addSerializers EnumeratumSerializerResolver }
   this += { _ addKeySerializers EnumeratumKeySerializerResolver }
 }
