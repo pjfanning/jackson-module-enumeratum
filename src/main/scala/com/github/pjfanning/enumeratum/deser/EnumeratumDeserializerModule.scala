@@ -28,7 +28,7 @@ private case class EnumeratumDeserializer[T <: EnumEntry](clazz: Class[T]) exten
   import EnumeratumDeserializerShared._
 
   private val clazzName = clazz.getName
-  private val enumInstance = getEnumInstance(clazzName)
+  private val enumInstance = getEnumInstance[T](clazzName)
 
   override def deserialize(p: JsonParser, ctxt: DeserializationContext): T = {
     emptyToNone(p.getValueAsString) match {
