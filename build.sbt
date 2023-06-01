@@ -7,7 +7,7 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
     name := "jackson-module-enumeratum",
     organization := "com.github.pjfanning",
     ThisBuild / scalaVersion := "2.13.10",
-    ThisBuild / crossScalaVersions := Seq("2.12.17", "2.13.10", "3.2.2"),
+    ThisBuild / crossScalaVersions := Seq("2.12.17", "2.13.10", "3.3.0"),
 
     sbtPlugin := false,
 
