@@ -7,7 +7,7 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
     name := "jackson-module-enumeratum",
     organization := "com.github.pjfanning",
     ThisBuild / scalaVersion := "2.13.8",
-    ThisBuild / crossScalaVersions := Seq("2.12.15", "2.13.8"),
+    ThisBuild / crossScalaVersions := Seq("2.12.15", "2.13.8", "3.2.1"),
 
     sbtPlugin := false,
 
@@ -32,9 +32,9 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
     ),
 
     libraryDependencies ++= Seq(
-      "com.beachape" %% "enumeratum" % "1.7.0",
-      "com.fasterxml.jackson.core" % "jackson-databind" % "2.13.3",
-      "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.13.3" % Test,
+      "com.beachape" %% "enumeratum" % "1.7.1",
+      "com.fasterxml.jackson.core" % "jackson-databind" % "2.13.5",
+      "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.13.5" % Test,
       "org.scalatest" %% "scalatest" % "3.2.11" % Test
     ),
 
