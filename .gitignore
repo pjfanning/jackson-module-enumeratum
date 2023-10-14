@@ -20,3 +20,6 @@ project/plugins/project/
 *.iml
 .idea/
 .bsp/sbt.json
+project/project
+target/
+
