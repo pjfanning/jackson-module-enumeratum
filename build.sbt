@@ -1,13 +1,13 @@
 import sbt._
 import Keys._
-import org.typelevel.sbt.gha.JavaSpec.Distribution.Zulu
+import sbtghactions.JavaSpec.Distribution.Zulu
 
 lazy val jacksonModuleEnumeratum = (project in file("."))
   .settings(
     name := "jackson-module-enumeratum",
     organization := "com.github.pjfanning",
-    ThisBuild / scalaVersion := "2.13.10",
-    ThisBuild / crossScalaVersions := Seq("2.12.17", "2.13.10", "3.2.2"),
+    ThisBuild / scalaVersion := "2.13.12",
+    ThisBuild / crossScalaVersions := Seq("2.12.18", "2.13.12", "3.3.1"),
 
     sbtPlugin := false,
 
@@ -32,7 +32,7 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
     ),
 
     libraryDependencies ++= Seq(
-      "com.beachape" %% "enumeratum" % "1.7.2",
+      "com.beachape" %% "enumeratum" % "1.7.3",
       "com.fasterxml.jackson.core" % "jackson-databind" % "2.15.3",
       "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.15.3" % Test,
       "org.scalatest" %% "scalatest" % "3.2.17" % Test
@@ -52,7 +52,7 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
     ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec(Zulu, "8")),
     ThisBuild / githubWorkflowPublishTargetBranches := Seq(
       RefPredicate.Equals(Ref.Branch("main")),
-      RefPredicate.Equals(Ref.Branch("2.12")),
+      RefPredicate.StartsWith(Ref.Branch("2.")),
       RefPredicate.StartsWith(Ref.Tag("v"))
     ),
 
