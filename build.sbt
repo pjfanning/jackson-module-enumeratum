@@ -50,6 +50,7 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
     }.taskValue,
 
     ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec(Zulu, "8")),
+    ThisBuild / githubWorkflowTargetTags ++= Seq("v*"),
     ThisBuild / githubWorkflowPublishTargetBranches := Seq(
       RefPredicate.Equals(Ref.Branch("main")),
       RefPredicate.StartsWith(Ref.Branch("2.")),
