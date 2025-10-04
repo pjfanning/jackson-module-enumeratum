@@ -6,8 +6,8 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
   .settings(
     name := "jackson-module-enumeratum",
     organization := "com.github.pjfanning",
-    ThisBuild / scalaVersion := "2.13.15",
-    ThisBuild / crossScalaVersions := Seq("2.12.20", "2.13.15", "3.3.4"),
+    ThisBuild / scalaVersion := "2.13.17",
+    ThisBuild / crossScalaVersions := Seq("2.12.20", "2.13.17", "3.3.6"),
 
     sbtPlugin := false,
 
@@ -16,7 +16,7 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
     homepage := Some(new java.net.URL("https://github.com/pjfanning/jackson-module-enumeratum/")),
     description := "A library for serializing/deserializing enumeratum enums using Jackson.",
 
-    publishTo := sonatypePublishToBundle.value,
+    // publishTo := sonatypePublishToBundle.value,
 
     licenses := Seq("APL2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")),
 
@@ -32,9 +32,9 @@ lazy val jacksonModuleEnumeratum = (project in file("."))
     ),
 
     libraryDependencies ++= Seq(
-      "com.beachape" %% "enumeratum" % "1.7.4",
-      "com.fasterxml.jackson.core" % "jackson-databind" % "2.18.0",
-      "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.18.0" % Test,
+      "com.beachape" %% "enumeratum" % "1.9.0",
+      "com.fasterxml.jackson.core" % "jackson-databind" % "2.20.0",
+      "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.20.0" % Test,
       "org.scalatest" %% "scalatest" % "3.2.19" % Test
     ),
 
