@@ -3,7 +3,10 @@
 ![Build Status](https://github.com/pjfanning/jackson-module-enumeratum/actions/workflows/ci.yml/badge.svg)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.pjfanning/jackson-module-enumeratum_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.pjfanning/jackson-module-enumeratum_2.13)
 
-Enumeratum support for Jackson
+Enumeratum support for Jackson.
+
+* jackson-module-enumeratum 3.x supports Jackson 3
+* jackson-module-enumeratum 2.x supports Jackson 2
 
 ```
 libraryDependencies += "com.github.pjfanning" %% "jackson-module-enumeratum" % "2.20.0"
