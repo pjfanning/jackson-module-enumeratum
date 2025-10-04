@@ -1,16 +1,16 @@
 package com.github.pjfanning.enumeratum.deser
 
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.databind._
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer
-import com.fasterxml.jackson.databind.deser.{Deserializers, KeyDeserializers}
-import com.github.pjfanning.enumeratum.JacksonModule
+import tools.jackson.core.JsonParser
+import tools.jackson.databind._
+import tools.jackson.databind.deser.std.StdDeserializer
+import tools.jackson.databind.deser.{Deserializers, KeyDeserializers}
+import com.github.pjfanning.enumeratum.JacksonEnumeratumModule
 import enumeratum.{Enum, EnumEntry}
 
 import scala.languageFeature.postfixOps
 
 private object EnumeratumDeserializerShared {
-  val EnumEntryClass = classOf[EnumEntry]
+  private[deser] val EnumEntryClass = classOf[EnumEntry]
 
   def emptyToNone(str: String): Option[String] = {
     Option(str).map(_.trim) match {
@@ -54,21 +54,24 @@ private case class EnumeratumKeyDeserializer[T <: EnumEntry](clazz: Class[T]) ex
 
 private object EnumeratumDeserializerResolver extends Deserializers.Base {
 
-  override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig, beanDesc: BeanDescription): JsonDeserializer[EnumEntry] =
+  override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig, beanDescRef: BeanDescription.Supplier): ValueDeserializer[EnumEntry] =
     if (EnumeratumDeserializerShared.EnumEntryClass isAssignableFrom javaType.getRawClass)
       EnumeratumDeserializer(javaType.getRawClass.asInstanceOf[Class[EnumEntry]])
     else None.orNull
+
+  override def hasDeserializerFor(config: DeserializationConfig, valueType: Class[_]): Boolean =
+    EnumeratumDeserializerShared.EnumEntryClass isAssignableFrom valueType
 }
 
 private object EnumeratumKeyDeserializerResolver extends KeyDeserializers {
 
-  override def findKeyDeserializer(javaType: JavaType, config: DeserializationConfig, beanDesc: BeanDescription): KeyDeserializer =
+  override def findKeyDeserializer(javaType: JavaType, config: DeserializationConfig, beanDescRef: BeanDescription.Supplier): KeyDeserializer =
     if (EnumeratumDeserializerShared.EnumEntryClass isAssignableFrom javaType.getRawClass)
       EnumeratumKeyDeserializer(javaType.getRawClass.asInstanceOf[Class[EnumEntry]])
     else None.orNull
 }
 
-trait EnumeratumDeserializerModule extends JacksonModule {
+trait EnumeratumDeserializerModule extends JacksonEnumeratumModule {
   override def getModuleName: String = "EnumeratumDeserializerModule"
   this += { _ addDeserializers EnumeratumDeserializerResolver }
   this += { _ addKeyDeserializers EnumeratumKeyDeserializerResolver }

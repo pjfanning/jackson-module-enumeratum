@@ -2,19 +2,19 @@ package com.github.pjfanning.enumeratum
 
 import java.util.Properties
 
-import com.fasterxml.jackson.core.Version
-import com.fasterxml.jackson.core.util.VersionUtil
-import com.fasterxml.jackson.databind.Module.SetupContext
-import com.fasterxml.jackson.databind.`type`.TypeModifier
-import com.fasterxml.jackson.databind.deser.Deserializers
-import com.fasterxml.jackson.databind.ser.{BeanSerializerModifier, Serializers}
-import com.fasterxml.jackson.databind.Module
+import tools.jackson.core.Version
+import tools.jackson.core.util.VersionUtil
+import tools.jackson.databind.JacksonModule
+import tools.jackson.databind.JacksonModule.SetupContext
+import tools.jackson.databind.`type`.TypeModifier
+import tools.jackson.databind.deser.Deserializers
+import tools.jackson.databind.ser.{Serializers, ValueSerializerModifier}
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable
 
-object JacksonModule {
-  private val cls = classOf[JacksonModule]
+object JacksonEnumeratumModule {
+  private val cls = classOf[JacksonEnumeratumModule]
   private val buildPropsFilename = cls.getPackage.getName.replace('.','/') + "/build.properties"
   lazy val buildProps: mutable.Map[String, String] = {
     val props = new Properties
@@ -31,13 +31,13 @@ object JacksonModule {
   }
 }
 
-trait JacksonModule extends Module {
+trait JacksonEnumeratumModule extends JacksonModule {
 
   private val initializers = Seq.newBuilder[SetupContext => Unit]
 
-  override def getModuleName = "JacksonModule"
+  override def getModuleName = "JacksonEnumeratumModule"
 
-  override def version = JacksonModule.version
+  override def version = JacksonEnumeratumModule.version
 
   def setupModule(context: SetupContext): Unit = {
     initializers.result().foreach(_ apply context)
@@ -47,5 +47,5 @@ trait JacksonModule extends Module {
   protected def +=(ser: Serializers): this.type = this += (_ addSerializers ser)
   protected def +=(deser: Deserializers): this.type = this += (_ addDeserializers deser)
   protected def +=(typeMod: TypeModifier): this.type = this += (_ addTypeModifier typeMod)
-  protected def +=(beanSerMod: BeanSerializerModifier): this.type = this += (_ addBeanSerializerModifier beanSerMod)
+  protected def +=(valueSerMod: ValueSerializerModifier): this.type = this += (_ addSerializerModifier valueSerMod)
 }
