@@ -54,5 +54,12 @@ class EnumeratumSerializerSpec extends AnyWordSpec with Matchers {
       jsonColors should include(s"""{"${Color.Red.entryName}":"red"}""")
       jsonFruits should include(s"""{"${Fruit.Apple.entryName}":"${Color.Red.entryName}","${Fruit.Pear.entryName}":"${Color.Green.entryName}","${Fruit.Blueberry.entryName}":"${Color.Blue.entryName}"}""")
     }
+    "serialize case class with map with enum key" in {
+      val mapper = JsonMapper.builder().addModule(DefaultScalaModule).addModule(EnumeratumModule).build()
+      val garage = Garage("Main St", Map(Color.Red -> 2, Color.Blue -> 1))
+      val json = mapper.writeValueAsString(garage)
+      json should include(s""""name":"${garage.name}"""")
+      json should include(s""""carsByColor":{"${Color.Red.entryName}":2,"${Color.Blue.entryName}":1}""")
+    }
   }
 }

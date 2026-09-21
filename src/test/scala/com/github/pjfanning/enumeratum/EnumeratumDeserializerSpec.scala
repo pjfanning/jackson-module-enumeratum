@@ -60,6 +60,21 @@ class EnumeratumDeserializerSpec extends AnyWordSpec with Matchers {
       fruitMap2 should have size 3
       fruitMap2(Fruit.Blueberry) shouldEqual Color.Blue
     }
+    "deserialize case class with map with enum key" in {
+      val mapper = JsonMapper.builder().addModule(DefaultScalaModule).addModule(EnumeratumModule).build()
+      val garage = Garage("Main St", Map(Color.Red -> 2, Color.Blue -> 1))
+      val json = mapper.writeValueAsString(garage)
+      val garage2 = mapper.readValue(json, classOf[Garage])
+      garage2 shouldEqual garage
+      garage2.carsByColor(Color.Red) shouldEqual 2
+    }
+    "deserialize map with enum key (uppercase)" in {
+      val mapper = JsonMapper.builder().addModule(DefaultScalaModule).addModule(EnumeratumModule).build()
+      val json = s"""{"${Color.Red.entryName.toUpperCase}":"red"}"""
+      val colorMap = mapper.readValue(json, new TypeReference[Map[Color, String]]{})
+      colorMap should have size 1
+      colorMap(Color.Red) shouldEqual "red"
+    }
     "serialize Colors" in {
       val mapper = JsonMapper.builder().addModule(DefaultScalaModule).addModule(EnumeratumModule).build()
       val json = mapper.writeValueAsString(Colors(Set(Color.Red, Color.Green)))
