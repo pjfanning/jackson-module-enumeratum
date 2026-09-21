@@ -1,5 +1,5 @@
-addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.2.1")
+addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.3.2")
 
-addSbtPlugin("com.github.sbt" % "sbt-github-actions" % "0.28.0")
+addSbtPlugin("com.github.sbt" % "sbt-github-actions" % "0.32.1")
 
-addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.11.2")
+addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.12.1")
